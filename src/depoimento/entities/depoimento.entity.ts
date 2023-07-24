@@ -29,4 +29,14 @@ export class Depoimento {
 
   @DeleteDateColumn({ name: 'deleted_at' })
   deletedAt: string;
+
+  constructor(createdDepoimento?: Partial<Depoimento>) {
+    this.id = createdDepoimento?.id;
+    this.foto = createdDepoimento?.foto;
+    this.depoimento = createdDepoimento?.depoimento;
+    this.username = createdDepoimento?.username;
+    this.createdAt = createdDepoimento?.createdAt;
+    this.updatedAt = createdDepoimento?.updatedAt;
+    this.deletedAt = createdDepoimento?.deletedAt;
+  }
 }

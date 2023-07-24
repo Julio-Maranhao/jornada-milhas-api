@@ -6,6 +6,7 @@ import {
   Put,
   Param,
   Delete,
+  ParseUUIDPipe,
 } from '@nestjs/common';
 import { DepoimentoService } from './depoimento.service';
 import { CreateDepoimentoDto } from './dto/create-depoimento.dto';
@@ -26,20 +27,20 @@ export class DepoimentoController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
+  findOne(@Param('id', new ParseUUIDPipe()) id: string) {
     return this.depoimentoService.findOne(id);
   }
 
   @Put(':id')
   update(
-    @Param('id') id: string,
+    @Param('id', new ParseUUIDPipe()) id: string,
     @Body() updateDepoimentoDto: UpdateDepoimentoDto,
   ) {
     return this.depoimentoService.update(id, updateDepoimentoDto);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
+  remove(@Param('id', new ParseUUIDPipe()) id: string) {
     return this.depoimentoService.remove(id);
   }
 }

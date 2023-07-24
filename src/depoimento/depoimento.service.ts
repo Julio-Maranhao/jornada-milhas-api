@@ -1,61 +1,61 @@
-import { Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { CreateDepoimentoDto } from './dto/create-depoimento.dto';
 import { UpdateDepoimentoDto } from './dto/update-depoimento.dto';
-import { Repository } from 'typeorm';
-import { Depoimento } from './entities/depoimento.entity';
-import { InjectRepository } from '@nestjs/typeorm';
+import { DepoimentoRepository } from './repositories/depoimento.repository';
 
 @Injectable()
 export class DepoimentoService {
-  constructor(
-    @InjectRepository(Depoimento)
-    private readonly depoimentoRepository: Repository<Depoimento>,
-  ) {}
+  constructor(private readonly depoimentoRepository: DepoimentoRepository) {}
 
-  create(createDepoimentoDto: CreateDepoimentoDto) {
-    return this.depoimentoRepository
-      .createQueryBuilder()
-      .insert()
-      .values(createDepoimentoDto)
-      .execute();
+  async create(createDepoimentoDto: CreateDepoimentoDto) {
+    const insertResult = await this.depoimentoRepository.qb_create(
+      createDepoimentoDto,
+    );
+
+    if (!insertResult.identifiers[0]?.id) {
+      throw new NotFoundException('Não foi possível criar o depoimento');
+    }
+
+    return await this.depoimentoRepository.qb_findOne(
+      insertResult.identifiers[0].id,
+    );
   }
 
-  findAll() {
-    return this.depoimentoRepository.createQueryBuilder().getMany();
+  async findAll() {
+    return await this.depoimentoRepository.find();
   }
 
-  findOne(id: string) {
-    return this.depoimentoRepository
-      .createQueryBuilder()
-      .where('id = :id', { id: id })
-      .getOne();
+  async findOne(id: string) {
+    return await this.depoimentoRepository.qb_findOne(id);
   }
 
-  findHome(random: boolean) {
-    const selectedOption: string = random ? 'RANDOM()' : 'created_at';
-    return this.depoimentoRepository
-      .createQueryBuilder()
-      .select()
-      .orderBy(selectedOption, 'DESC')
-      .take(3)
-      .getMany();
+  async findHome(random: boolean) {
+    return await this.depoimentoRepository.qb_findHome(random);
   }
 
-  update(id: string, updateDepoimentoDto: UpdateDepoimentoDto) {
-    return this.depoimentoRepository
-      .createQueryBuilder()
-      .update(Depoimento)
-      .set(updateDepoimentoDto)
-      .where('id = :id', { id: id })
-      .execute();
+  async update(id: string, updateDepoimentoDto: UpdateDepoimentoDto) {
+    const updateResult = await this.depoimentoRepository.qb_update(
+      id,
+      updateDepoimentoDto,
+    );
+    if (updateResult.affected < 1) {
+      throw new BadRequestException('Não foi possível atualizar o depoimento.');
+    }
+
+    return await this.depoimentoRepository.qb_findOne(id);
   }
 
-  remove(id: string) {
-    return this.depoimentoRepository
-      .createQueryBuilder()
-      .delete()
-      .from(Depoimento)
-      .where('id = :id', { id: id })
-      .execute();
+  async remove(id: string) {
+    const deleteResult = await this.depoimentoRepository.qb_remove(id);
+
+    if (deleteResult.affected < 1) {
+      throw new BadRequestException('Não foi possível excluir o depoimento.');
+    }
+
+    return { message: 'Depoimento excluído com sucesso', statusCode: 200 };
   }
 }
