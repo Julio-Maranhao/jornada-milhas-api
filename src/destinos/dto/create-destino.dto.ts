@@ -1,13 +1,26 @@
-import { IsNotEmpty, IsNumber, IsString } from 'class-validator';
+import { IsNotEmpty, IsNumber, IsOptional, IsString } from 'class-validator';
+import { Destino } from '../entities/destino.entity';
 
 export class CreateDestinoDto {
-  @IsNotEmpty({ message: 'O campo foto não pode ser vazio' })
+  @IsNotEmpty({ message: 'O campo foto1 não pode ser vazio' })
   @IsString()
-  foto: string;
+  foto1: string;
+
+  @IsNotEmpty({ message: 'O campo foto2 não pode ser vazio' })
+  @IsString()
+  foto2: string;
 
   @IsNotEmpty({ message: 'O campo nome não pode ser vazio' })
   @IsString()
   nome: string;
+
+  @IsNotEmpty({ message: 'O campo meta não pode ser vazio' })
+  @IsString()
+  meta: string;
+
+  @IsString()
+  @IsOptional()
+  textoDescritivo: string;
 
   @IsNotEmpty({ message: 'O campo preco não pode ser vazio' })
   @IsNumber(
@@ -15,4 +28,13 @@ export class CreateDestinoDto {
     { message: 'O campo preco deve ser um numero com até 2 casas decimais.' },
   )
   preco: number;
+
+  constructor(destino?: Partial<Destino>) {
+    this.foto1 = destino?.foto1;
+    this.foto2 = destino?.foto2;
+    this.nome = destino?.nome;
+    this.meta = destino?.meta;
+    this.textoDescritivo = destino?.textoDescritivo;
+    this.preco = destino?.preco;
+  }
 }

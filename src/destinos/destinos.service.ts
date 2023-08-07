@@ -29,7 +29,7 @@ export class DestinosService {
     if (!destino) {
       throw new NotFoundException('Não foi possível localizar o destino.');
     }
-    return destino;
+    return new CreateDestinoDto(destino);
   }
 
   async update(id: string, updateDestinoDto: UpdateDestinoDto) {
