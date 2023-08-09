@@ -18,7 +18,7 @@ export class DestinosService {
     return await this.destinoRepository.save(destino);
   }
 
-  async findAll(nome: string) {
+  async findAll(nome?: string) {
     const options = nome ? { where: { nome: ILike(`%${nome}%`) } } : {};
     return await this.destinoRepository.find(options);
   }

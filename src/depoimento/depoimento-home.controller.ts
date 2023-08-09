@@ -6,7 +6,7 @@ export class DepoimentoHomeController {
   constructor(private readonly depoimentoService: DepoimentoService) {}
 
   @Get()
-  findHome(@Query('random') random: boolean) {
+  findHome(@Query('random') random?: boolean) {
     return this.depoimentoService.findHome(random);
   }
 }

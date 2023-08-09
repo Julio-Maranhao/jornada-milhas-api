@@ -1,4 +1,5 @@
 import {
+  BeforeInsert,
   Column,
   CreateDateColumn,
   DeleteDateColumn,
@@ -6,6 +7,7 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
+import { GptIntegration } from '../ai/gpt-integrations.provider';
 
 @Entity({ name: 'destinos' })
 export class Destino {
@@ -50,5 +52,14 @@ export class Destino {
     this.createdAt = createdDestino?.createdAt;
     this.updatedAt = createdDestino?.updatedAt;
     this.deletedAt = createdDestino?.deletedAt;
+  }
+
+  @BeforeInsert()
+  async setTextoDescritivo() {
+    if (!this.textoDescritivo) {
+      this.textoDescritivo = await GptIntegration.GenerateDescription(
+        this.nome,
+      );
+    }
   }
 }

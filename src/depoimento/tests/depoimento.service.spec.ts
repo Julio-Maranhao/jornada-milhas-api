@@ -134,6 +134,10 @@ describe('DepoimentoService', () => {
     });
 
     it('should throw an exception', async () => {
+      // Arrange
+      jest
+        .spyOn(depoimentoRepository, 'qb_findOne')
+        .mockRejectedValueOnce(new Error());
       // Assert
       expect(depoimentoService.findOne('')).rejects.toThrowError();
       expect(depoimentoRepository.qb_findOne).toHaveBeenCalledTimes(1);
@@ -160,7 +164,61 @@ describe('DepoimentoService', () => {
     });
   });
 
-  describe('update', () => {});
+  describe('update', () => {
+    it('should return an updated depoimento', async () => {
+      // Arrange
+      jest.spyOn(depoimentoRepository, 'qb_findOne').mockResolvedValueOnce(
+        new Depoimento({
+          id: uuidList[0],
+          foto: 'foto.png',
+          depoimento: 'depoimento atualizado',
+          username: 'teste 1',
+        }),
+      );
+      // Act
+      const updatedDepoimento = await depoimentoService.update(uuidList[0], {
+        depoimento: 'depoimento atualizado',
+      });
+      // Assert
+      expect(updatedDepoimento.depoimento).toEqual('depoimento atualizado');
+      expect(depoimentoRepository.qb_update).toBeCalledTimes(1);
+      expect(depoimentoRepository.qb_findOne).toBeCalledTimes(1);
+    });
 
-  describe('delete', () => {});
+    it('should throw an exception', async () => {
+      // Arrange
+      jest.spyOn(depoimentoRepository, 'qb_update').mockResolvedValueOnce({
+        affected: 0,
+        raw: '',
+        generatedMaps: [],
+      });
+
+      // Assert
+      expect(
+        depoimentoService.update('uuid', {
+          depoimento: 'depoimento atualizado',
+        }),
+      ).rejects.toThrowError();
+    });
+  });
+
+  describe('remove', () => {
+    it('should return an ok message', async () => {
+      // Act
+      const removeAction = await depoimentoService.remove(uuidList[0]);
+      // Assert
+      expect(depoimentoRepository.qb_remove).toBeCalledTimes(1);
+      expect(removeAction.message).toEqual('Depoimento excluído com sucesso');
+    });
+
+    it('should throw an exception', async () => {
+      // Arrange
+      jest.spyOn(depoimentoRepository, 'qb_remove').mockResolvedValueOnce({
+        affected: 0,
+        raw: '',
+      });
+      // Assert
+      expect(depoimentoService.remove(uuidList[0])).rejects.toThrowError();
+    });
+  });
 });

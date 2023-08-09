@@ -23,7 +23,7 @@ export class DestinosController {
   }
 
   @Get()
-  findAll(@Query('nome') nome: string) {
+  findAll(@Query('nome') nome?: string) {
     return this.destinosService.findAll(nome);
   }
 
