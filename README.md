@@ -2,37 +2,64 @@
   <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="200" alt="Nest Logo" /></a>
 </p>
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+## Description 👨‍💻
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://coveralls.io/github/nestjs/nest?branch=master" target="_blank"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#9" alt="Coverage" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+Project made using NestJs, TypeORM, Postgres, Docker and ChatGPT.
+Part of Allura Back-End Chaleng 7 - Jornada Milhas API
 
-## Description
+## Requirements 💻
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
-
-## Installation
+Have [Docker Desktop](https://www.docker.com/products/docker-desktop/) installed
+have [Visual Studio Code](https://code.visualstudio.com/) installed
+## Installation 👨‍💻
 
 ```bash
+$ git clone https://github.com/Julio-Maranhao/jornada-milhas-api
+$ cd jornada-milhas-api
 $ npm install
 ```
 
-## Running the app
+## Before Running 🦶💨
+
+##### Create a .env file on project root with this configuration:
+
+```js
+DB_USERNAME=username
+DB_PASSWORD=password
+DB_ADMIN_EMAIL=udername@admin.com
+DB_PORT=5432
+DB_HOST= 127.0.0.1
+DB_NAME=jornada_milhas
+GPT_API_KEY=your-chatGPT-api-key
+```
+##### Run command
+```bash
+$ docker compose up -d
+```
+##### open postgres admin on [localhost:8081](http://localhost:8081)
+
+login: DB_ADMINEMAIL
+password: DB_PASSWORD
+
+##### Create Database on Postgres
+right-click on servers ➡ Create Server:
+name: jornada_milhas
+Host: postgres
+port: equals DB_PORT
+username: equals DB_USERNAME
+
+right-click on databases ➡ Create Database:
+database: jornada_milhas
+owner: equals DB_USERNAME
+
+After Creation you can close pgAdmin
+
+##### Create all tables
+```bash
+$ npm run typeorm:run-migrations
+```
+
+## Running the app 🚘
 
 ```bash
 # development
@@ -45,7 +72,7 @@ $ npm run start:dev
 $ npm run start:prod
 ```
 
-## Test
+## Test 📈
 
 ```bash
 # unit tests
@@ -58,16 +85,18 @@ $ npm run test:e2e
 $ npm run test:cov
 ```
 
-## Support
+## Challenges 🎯
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+Build an RestAPI with NestJs from Scratch implementing:
 
-## Stay in touch
-
-- Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
-
-## License
-
-Nest is [MIT licensed](LICENSE).
+- TDD;
+- SOLID;
+- TypeORM Query Builders;
+- Unit tests using Jest;
+- E2E tests using Jest;
+- ChatGpt Integration;
+- Validators;
+- Error handling;
+- Migrations;
+- Documentation with Swagger;
+- Nest BultIn Pipes;

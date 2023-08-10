@@ -1,3 +1,4 @@
+import { ApiProperty } from '@nestjs/swagger';
 import {
   Column,
   CreateDateColumn,
@@ -10,24 +11,31 @@ import {
 @Entity({ name: 'depoimentos' })
 export class Depoimento {
   @PrimaryGeneratedColumn('uuid')
+  @ApiProperty()
   id: string;
 
   @Column({ name: 'foto', length: 255, nullable: false })
+  @ApiProperty()
   foto: string;
 
   @Column({ name: 'depoimento', length: 255, nullable: false })
+  @ApiProperty()
   depoimento: string;
 
   @Column({ name: 'username', length: 50, nullable: false })
+  @ApiProperty()
   username: string;
 
   @CreateDateColumn({ name: 'created_at' })
+  @ApiProperty()
   createdAt: string;
 
   @UpdateDateColumn({ name: 'updated_at' })
+  @ApiProperty()
   updatedAt: string;
 
   @DeleteDateColumn({ name: 'deleted_at' })
+  @ApiProperty()
   deletedAt: string;
 
   constructor(createdDepoimento?: Partial<Depoimento>) {
